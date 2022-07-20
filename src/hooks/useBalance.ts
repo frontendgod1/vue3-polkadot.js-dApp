@@ -26,10 +26,7 @@ export async function fetchBalance(api: ApiPromise, address: string) {
   }
 }
 
-export function formatBalance(
-  balance: string,
-  tokenDecimals: string | undefined
-) {
+export function formatBalance(balance: any, tokenDecimals: string | undefined) {
   return Number(utils.formatUnits(balance, tokenDecimals)).toFixed(2);
 }
 
