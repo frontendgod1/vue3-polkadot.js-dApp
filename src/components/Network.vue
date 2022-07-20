@@ -1,13 +1,12 @@
 <template>
   <div class="network">
-    <img class="network-logo" :src="logoImg" />
+    <img class="network-logo" :src="logo" />
     {{ networkName }}
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "@vue/runtime-core";
-import { ref, watchEffect } from "vue";
+import { computed, defineComponent } from "@vue/runtime-core";
 
 export default defineComponent({
   props: {
@@ -19,18 +18,6 @@ export default defineComponent({
       type: String,
       required: true,
     },
-  },
-  setup(props) {
-    const logoImg = ref();
-    watchEffect(async () => {
-      logoImg.value = (
-        await import(`/src/assets/images/${props.logo}`)
-      ).default;
-    });
-
-    return {
-      logoImg,
-    };
   },
 });
 </script>

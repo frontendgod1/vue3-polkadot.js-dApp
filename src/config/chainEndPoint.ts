@@ -1,5 +1,6 @@
 import type { RegistryTypes } from "@polkadot/types/types";
 import * as typeDefs from "./api/polkadot/registry-types";
+import Logo from "../assets/images/ic_shiden.png";
 
 interface ChainProvider {
   networkAlias: string;
@@ -87,7 +88,7 @@ export const providerEndpoints: ChainProvider[] = [
       "https://shiden.api.onfinality.io/public",
     ],
     faucetEndpoint: "https://astar-discord-faucet.herokuapp.com/shiden",
-    defaultLogo: "ic_shiden.png",
+    defaultLogo: Logo,
   },
   {
     networkAlias: "shibuya-testnet",
