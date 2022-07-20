@@ -23,7 +23,7 @@ export default defineComponent({
   setup(props) {
     const logoImg = ref();
     watchEffect(async () => {
-      logoImg.value = (await import(`../assets/images/${props.logo}`)).default;
+      logoImg.value = (await import(`@/assets/images/${props.logo}`)).default;
     });
 
     return {
