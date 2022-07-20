@@ -19,10 +19,17 @@
             {{ formatBalance(account.balance, tokenDecimals) }}
             <span class="token-symbol">{{ nativeTokenSymbol }}</span>
           </td>
-          <td></td>
+          <td>
+            <img
+              class="transfer-btn"
+              src="@/assets/images/transfer.png"
+              @click="selectAccount(account.address)"
+            />
+          </td>
         </tr>
       </tbody>
     </table>
+    <TransferModal v-if="openModal" :close-modal="closeModal" />
   </div>
 </template>
 
@@ -32,9 +39,14 @@ import type { SubstrateAccount } from "../hooks/useConnectWallet";
 import { useStore } from "../store";
 import { fetchNativeBalance, formatBalance } from "../hooks/useBalance";
 import { ApiPromise } from "@polkadot/api";
+import TransferModal from "./TransferModal.vue";
 
 export default defineComponent({
+  components: {
+    TransferModal,
+  },
   setup() {
+    const openModal = ref<boolean>();
     const accountBalanceMap = ref<SubstrateAccount[]>([]);
     const store = useStore();
     const accounts = computed<SubstrateAccount[]>(
@@ -53,8 +65,6 @@ export default defineComponent({
       return chainInfo ? chainInfo.tokenDecimals : "18";
     });
 
-    const chainInfo = computed(() => store.getters["account/chainInfo"]);
-
     const updateAccountMap = async (): Promise<void> => {
       const updatedAccountMap = await Promise.all(
         accounts.value.map(async (it) => {
@@ -69,7 +79,7 @@ export default defineComponent({
     };
 
     watch(
-      [accounts, chainInfo],
+      [accounts],
       async () => {
         if (!accounts.value.length) return;
         try {
@@ -82,11 +92,23 @@ export default defineComponent({
       { immediate: true }
     );
 
+    function selectAccount(address: string) {
+      store.commit("account/setCurrentAddress", address);
+      openModal.value = true;
+    }
+
+    function closeModal() {
+      openModal.value = false;
+    }
+
     return {
       accountBalanceMap,
       formatBalance,
       nativeTokenSymbol,
       tokenDecimals,
+      selectAccount,
+      openModal,
+      closeModal,
     };
   },
 });
@@ -135,5 +157,14 @@ tbody tr:hover {
 
 .token-symbol {
   text-transform: uppercase;
+  margin-left: 5px;
+}
+
+.transfer-btn {
+  transition: 0.2s;
+}
+
+.transfer-btn:hover {
+  transform: scale(1.2);
 }
 </style>

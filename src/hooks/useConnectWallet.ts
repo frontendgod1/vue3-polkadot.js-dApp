@@ -1,6 +1,6 @@
 import { connectApi } from "../config/api/polkadot/connectApi";
 import { keyring } from "@polkadot/ui-keyring";
-import type { ApiPromise } from "@polkadot/api";
+import { WsProvider, ApiPromise } from "@polkadot/api";
 import { useStore } from "@/store";
 import { useExtensions } from "./useExtensions";
 import { xcmChainEndPoints, providerEndpoints } from "../config/chainEndPoint";
@@ -69,7 +69,17 @@ export const useConnectWallet = () => {
     });
   };
 
+  const connectXCMApi = async () => {
+    const endpoint = providerEndpoints[0].endpoint;
+    const provider = new WsProvider(endpoint);
+    const api = new ApiPromise({ provider });
+
+    await api.isReady;
+    return api;
+  };
+
   return {
     connect,
+    connectXCMApi,
   };
 };

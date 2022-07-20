@@ -15,7 +15,6 @@ export interface GeneralMutations<S = State> {
 
 const mutation: MutationTree<State> & GeneralMutations = {
   setChainInfo(state, chainInfo) {
-    console.log(chainInfo);
     state.chainInfo = chainInfo;
   },
   setExtensionCount(state, count) {

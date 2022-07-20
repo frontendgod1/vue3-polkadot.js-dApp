@@ -1,4 +1,3 @@
-import { useChainInfo } from "@/hooks/useChainInfo";
 import { ApiPromise, WsProvider } from "@polkadot/api";
 
 const RES_INVALID_CONNECTION = "invalid connection";
