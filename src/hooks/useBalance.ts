@@ -26,7 +26,10 @@ export async function fetchBalance(api: ApiPromise, address: string) {
   }
 }
 
-export function formatBalance(balance: string, tokenDecimals: string) {
+export function formatBalance(
+  balance: string,
+  tokenDecimals: string | undefined
+) {
   return Number(utils.formatUnits(balance, tokenDecimals)).toFixed(2);
 }
 
@@ -35,7 +38,7 @@ export const fetchNativeBalance = async ({
   address,
 }: {
   api: ApiPromise;
-  address: string | undefined;
+  address: string;
 }) => {
   try {
     const accountInfo = await api.query.system.account<SystemAccount>(address);
