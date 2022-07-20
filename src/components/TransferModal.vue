@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts">
-import { ApiPromise } from "@polkadot/api";
+import type { ApiPromise } from "@polkadot/api";
 import { computed, defineComponent, ref } from "@vue/runtime-core";
 import { watch } from "vue";
 import { providerEndpoints, xcmChainEndPoints } from "../config/chainEndPoint";
@@ -46,12 +46,7 @@ import { useConnectWallet } from "../hooks/useConnectWallet";
 import { useStore } from "../store";
 
 export default defineComponent({
-  props: {
-    closeModal: {
-      type: Function,
-      required: true,
-    },
-  },
+  props: ["closeModal"],
   setup(props) {
     let transferAmount = ref<string>();
     let tokenBalance = ref<string>("0");
@@ -92,7 +87,7 @@ export default defineComponent({
       destBalance.value = balance || "0";
     };
 
-    function setBalance(e) {
+    function setBalance(e: any) {
       transferAmount.value = e.target.value;
     }
 

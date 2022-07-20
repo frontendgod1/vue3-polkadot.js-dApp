@@ -35,7 +35,7 @@ export const fetchNativeBalance = async ({
   address,
 }: {
   api: ApiPromise;
-  address: string;
+  address: string | undefined;
 }) => {
   try {
     const accountInfo = await api.query.system.account<SystemAccount>(address);
