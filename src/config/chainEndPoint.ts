@@ -87,7 +87,7 @@ export const providerEndpoints: ChainProvider[] = [
       "https://shiden.api.onfinality.io/public",
     ],
     faucetEndpoint: "https://astar-discord-faucet.herokuapp.com/shiden",
-    defaultLogo: "/src/assets/images/ic_shiden.png",
+    defaultLogo: "ic_shiden.png",
   },
   {
     networkAlias: "shibuya-testnet",
