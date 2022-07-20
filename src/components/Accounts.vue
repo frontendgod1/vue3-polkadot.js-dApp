@@ -38,7 +38,7 @@ import { computed, defineComponent, ref, watch } from "vue";
 import type { SubstrateAccount } from "../hooks/useConnectWallet";
 import { useStore } from "../store";
 import { fetchNativeBalance, formatBalance } from "../hooks/useBalance";
-import { ApiPromise } from "@polkadot/api";
+import type { ApiPromise } from "@polkadot/api";
 import TransferModal from "./TransferModal.vue";
 
 export default defineComponent({

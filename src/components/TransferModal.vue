@@ -6,7 +6,7 @@
       <div class="chainName">{{ xcmChainEndPoints[0].chainName }}</div>
     </div>
     <div class="chain">
-      <span>FROM</span>
+      <span>TO</span>
       <div class="chainName">{{ providerEndpoints[0].chainName }}</div>
     </div>
     <div class="chain">
