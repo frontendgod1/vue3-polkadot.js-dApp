@@ -1,12 +1,14 @@
-<script lang="ts"></script>
-
 <template>
-  <div>
-    <router-view />
-  </div>
+  <router-view />
 </template>
 
-<style scoped>
+<script lang="ts">
+import { defineComponent } from "@vue/runtime-core";
+
+export default defineComponent({});
+</script>
+
+<style>
 .wrapper {
   width: 100%;
   max-width: 1560px;
