@@ -3,6 +3,10 @@ import { keyring } from "@polkadot/ui-keyring";
 import type { ApiPromise } from "@polkadot/api";
 import { useStore } from "@/store";
 import { useExtensions } from "./useExtensions";
+import { xcmChainEndPoints, providerEndpoints } from "../config/chainEndPoint";
+import type { Struct } from "@polkadot/types";
+import { useChainInfo } from "./useChainInfo";
+import { watchPostEffect } from "vue";
 
 export type SubstrateAccount = {
   address: string;
@@ -11,13 +15,8 @@ export type SubstrateAccount = {
   balance?: string;
 };
 
-interface InjectedAccountExt {
-  address: string;
-  meta: {
-    name: string;
-    source: string;
-    whenCreated: number;
-  };
+interface Account extends Struct {
+  balance: string;
 }
 
 export const useConnectWallet = () => {
@@ -51,7 +50,6 @@ export const useConnectWallet = () => {
 
           seen.add(addressWithSource);
           substrateAccounts.push(data);
-          console.log(data);
           store.commit("account/setSubstrateAccounts", substrateAccounts);
         }
       });
@@ -59,9 +57,16 @@ export const useConnectWallet = () => {
   });
 
   const connect = async (): Promise<void> => {
-    const { api } = await connectApi(store);
-    $api = api;
-    const { extensions } = useExtensions($api);
+    const { api } = await connectApi(store, xcmChainEndPoints[0].endpoint);
+    // $api = api;
+    const { extensions } = useExtensions(api);
+    const { chainInfo } = useChainInfo(api);
+
+    store.commit("account/setApi", api);
+
+    watchPostEffect(() => {
+      store.commit("account/setChainInfo", chainInfo.value);
+    });
   };
 
   return {

@@ -54,7 +54,7 @@ export function useExtensions(api: ApiPromise) {
       const injectedPromise = await getInjectedExtensions(true);
       extensions.value = await injectedPromise;
 
-      const selectedAddress = localStorage.getItem("selectedAddress");
+      const selectedAddress = localStorage.getItem("connected");
       if (!selectedAddress) {
         await loadAccounts();
       }

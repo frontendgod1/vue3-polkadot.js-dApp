@@ -31,7 +31,7 @@ import Spinner from "../components/Spinner.vue";
 import Network from "../components/Network.vue";
 import { useStore } from "../store";
 import { ref } from "vue";
-import { providerEndpoints } from "../config/chainEndPoint";
+import { xcmChainEndPoints } from "../config/chainEndPoint";
 
 export default defineComponent({
   components: {
@@ -46,21 +46,12 @@ export default defineComponent({
       () => store.getters["account/networkStatus"]
     );
 
-    const currentNetworkIdx = computed(
-      () => store.getters["account/networkIdx"]
-    );
-
-    const currentNetworkName = ref<string>(
-      providerEndpoints[currentNetworkIdx.value].displayName
-    );
-    const currentLogo = ref<string>(
-      providerEndpoints[currentNetworkIdx.value].defaultLogo
-    );
+    const currentNetworkName = ref<string>(xcmChainEndPoints[0].chainName);
+    const currentLogo = ref<string>(xcmChainEndPoints[0].logo);
 
     return {
       connect,
       networkStatus,
-      currentNetworkIdx,
       currentNetworkName,
       currentLogo,
     };

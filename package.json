@@ -23,6 +23,7 @@
     "@polkadot/vue-identicon": "^2.8.2",
     "@polkadot/x-randomvalues": "^10.0.2",
     "@vue-polkadot/vue-settings": "^0.0.38-rc.13",
+    "ethers": "^5.6.9",
     "vue": "^3.2.37",
     "vue-router": "^4.1.2",
     "vuex": "^4.0.2"

@@ -1,3 +1,4 @@
+import { useChainInfo } from "@/hooks/useChainInfo";
 import { ApiPromise, WsProvider } from "@polkadot/api";
 
 const RES_INVALID_CONNECTION = "invalid connection";
@@ -5,10 +6,8 @@ const RES_CONNECTED_API = "connected";
 const RES_TIMEOUT = "timeout";
 
 const fallbackConnection = async ({
-  networkIdx,
   endpoint,
 }: {
-  networkIdx: number;
   endpoint: string;
 }): Promise<void> => {
   try {
@@ -46,8 +45,7 @@ const fallbackConnection = async ({
 
 export async function connectApi(
   store: any,
-  endpoint: string = "wss://rpc.shiden.astar.network",
-  networkIdx: number = 1
+  endpoint: string
 ): Promise<{
   api: ApiPromise;
 }> {
@@ -72,22 +70,21 @@ export async function connectApi(
     const race = Promise.race<string>([apiConnect, fallbackTimeout]);
     race.then((res: string) => {
       if (res === RES_TIMEOUT) {
-        fallbackConnection({ networkIdx, endpoint });
+        fallbackConnection({ endpoint });
       }
     });
   } catch (e) {
     console.error(e);
-    fallbackConnection({ networkIdx, endpoint });
+    fallbackConnection({ endpoint });
   }
 
   try {
     await api.isReady;
 
     store.commit("account/setCurrentNetworkStatus", "connected");
-    store.commit("account/setCurrentNetworkIdx", networkIdx);
   } catch (err) {
     console.error(err);
-    fallbackConnection({ networkIdx, endpoint });
+    fallbackConnection({ endpoint });
   }
 
   return {

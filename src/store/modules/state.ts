@@ -1,4 +1,4 @@
-import { endpointKey } from "../../config/chainEndPoint";
+import type { ChainInfo } from "@/hooks/useChainInfo";
 
 export type SubstrateAccount = {
   address: string;
@@ -8,11 +8,11 @@ export type SubstrateAccount = {
 };
 
 export interface GeneralStateInterface {
+  api: any;
   connected: boolean;
-  chainInfo: any;
+  chainInfo: ChainInfo | undefined;
   extensionCount: number;
   substrateAccounts: SubstrateAccount[];
-  currentNetworkIdx: number;
   currentAddress: string;
   currentNetworkStatus: ConnectionType;
   currentWallet: string;
@@ -22,11 +22,11 @@ export type ConnectionType = "connected" | "connecting" | "offline";
 
 function state(): GeneralStateInterface {
   return {
+    api: undefined,
     connected: false,
     chainInfo: undefined,
     extensionCount: 0,
     substrateAccounts: [],
-    currentNetworkIdx: endpointKey.SHIDEN,
     currentNetworkStatus: "offline",
     currentAddress: "",
     currentWallet: "",
