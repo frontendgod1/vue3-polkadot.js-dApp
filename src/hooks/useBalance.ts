@@ -12,15 +12,20 @@ export interface SystemAccount extends Struct {
   };
 }
 
+interface Account extends Struct {
+  balance: string;
+}
+
 export async function fetchBalance(api: ApiPromise, address: string) {
-  console.log(api, address);
   try {
-    const balance = await api.query.assets.account(
+    const result = await api.query.assets.account<Account>(
       String("340282366920938463463374607431768211455"),
       address
     );
-    console.log(balance.toJSON());
-    return balance.toString();
+    const data = result.toJSON();
+    console.log(data);
+    const balance = data ? String(data.balance) : "0";
+    return balance;
   } catch (error) {
     console.error(error);
     return "0";

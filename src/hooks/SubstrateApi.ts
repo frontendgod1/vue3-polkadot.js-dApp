@@ -147,68 +147,11 @@ class ChainApi {
           account,
           { signer, nonce: -1, tip },
           (result) => {
-            const status = result.status;
-            if (status.isFinalized) {
-              let finalResult = false;
-              const events = result.events;
-              events
-                .filter(
-                  (record): boolean =>
-                    !!record.event && record.event.section !== "democracy"
-                )
-                .map(({ event: { data, method, section } }) => {
-                  // console.log('event', method, section, data);
-                  // if (section === 'utility' && method === 'BatchInterrupted') {
-                  //   console.log(data.toHuman());
-                  // }
-
-                  if (section === "system" && method === "ExtrinsicFailed") {
-                    const [dispatchError] = data as unknown as ITuple<
-                      [DispatchError]
-                    >;
-                    let message = dispatchError.type.toString();
-
-                    if (dispatchError.isModule) {
-                      try {
-                        const mod = dispatchError.asModule;
-                        const error = dispatchError.registry.findMetaError(mod);
-
-                        message = `${error.section}.${error.name}`;
-                      } catch (error) {
-                        // swallow
-                        console.error(error);
-                      }
-                    } else if (dispatchError.isToken) {
-                      message = `${dispatchError.type}.${dispatchError.asToken.type}`;
-                    }
-
-                    console.log(`action: ${section}.${method} ${message}`);
-                    finalResult = true;
-                  } else if (
-                    section === "utility" &&
-                    method === "BatchInterrupted"
-                  ) {
-                    // TODO there should be a better way to extract error,
-                    // for some reason cast data as unknown as ITuple<[DispatchError]>; doesn't work
-                    const anyData = data as any;
-                    const error = anyData[1].registry.findMetaError(
-                      anyData[1].asModule
-                    );
-                    let message = `${error.section}.${error.name}`;
-                    console.log(`action: ${section}.${method} ${message}`);
-                    finalResult = true;
-                  }
-                });
-
-              if (!finalResult) resolve(true);
-              finalizedCallback();
-            }
-
-            // handleResult &&
-            //   handleResult(result).then(async () => {
-            //     await finalizedCallback();
-            //     resolve(true);
-            //   });
+            handleResult &&
+              handleResult(result).then(async () => {
+                await finalizedCallback();
+                resolve(true);
+              });
 
             // handle transaction errors
             result.events

@@ -8,6 +8,7 @@ import { u8aToHex } from "@polkadot/util";
 import { decodeAddress } from "@polkadot/util-crypto";
 import type { ApiPromise } from "@polkadot/api";
 import { xcmChainEndPoints } from "@/config/chainEndPoint";
+import { useCustomSignature } from "./useCustomSignature";
 
 export interface XcmChain {
   name: string;
@@ -56,6 +57,8 @@ export const useBridge = () => {
   const isDeposit = ref<boolean>(true);
   const $api = computed<ApiPromise>(() => store.getters["account/currentApi"]);
 
+  const { handleResult, handleTransactionError } = useCustomSignature({});
+
   const substrateAccounts = computed(
     () => store.getters["account/substrateAccounts"]
   );
@@ -97,6 +100,10 @@ export const useBridge = () => {
     return hexPublicKey;
   };
 
+  const setIsDisabledBridge = (): void => {
+    isDisabledBridge.value = !amount.value || Number(amount.value) === 0;
+  };
+
   const bridge = async (
     finalizedCallback: () => Promise<void>
   ): Promise<void> => {
@@ -130,7 +137,7 @@ export const useBridge = () => {
             signer: injector.signer,
             tx: txCall,
             finalizedCallback,
-            handleResult: undefined,
+            handleResult: handleResult,
             tip: "1",
           })
           .catch((error: Error) => {
@@ -168,7 +175,7 @@ export const useBridge = () => {
             signer: injector.signer,
             tx: txCall,
             finalizedCallback,
-            handleResult: undefined,
+            handleResult: handleResult,
             tip: "1",
           })
           .catch((error: Error) => {
@@ -187,10 +194,12 @@ export const useBridge = () => {
   };
 
   watchEffect(initializeXcmApi);
+  watchEffect(setIsDisabledBridge);
 
   return {
     bridge,
     inputHandler,
     amount,
+    isDisabledBridge,
   };
 };

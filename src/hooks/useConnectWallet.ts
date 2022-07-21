@@ -70,7 +70,7 @@ export const useConnectWallet = () => {
   };
 
   const connectXCMApi = async () => {
-    const endpoint = providerEndpoints[0].endpoint;
+    const endpoint = "wss://wss.astar.network";
     const provider = new WsProvider(endpoint);
     const api = new ApiPromise({ provider });
 
