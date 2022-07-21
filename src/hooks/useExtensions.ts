@@ -44,6 +44,7 @@ export const getSelectedAccount = (
 export const getInjector = async (accounts: SubstrateAccount[]) => {
   const account = getSelectedAccount(accounts);
   const extensions = await getInjectedExtensions();
+  console.log(account, extensions);
   const injector = extensions.find((it) => it.name === account?.source);
   return injector;
 };
