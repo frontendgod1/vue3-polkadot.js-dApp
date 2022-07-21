@@ -19,6 +19,7 @@ export async function fetchBalance(api: ApiPromise, address: string) {
       String("340282366920938463463374607431768211455"),
       address
     );
+    console.log(balance.toJSON());
     return balance.toString();
   } catch (error) {
     console.error(error);

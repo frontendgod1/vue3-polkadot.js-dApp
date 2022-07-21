@@ -14,19 +14,15 @@
         type="number"
         min="0"
         placeholder="0.00"
-        :value="transferAmount"
-        @change="setBalance"
+        :value="amount"
+        @change="inputHandler"
       />
       <div class="balance">
         {{ formatBalance(tokenBalance, tokenDecimals) }}
         <span class="token-symbol">{{ nativeTokenSymbol }}</span>
       </div>
     </div>
-    <button
-      :disabled="!transferAmount"
-      @click="handleBridge"
-      class="confirm-btn"
-    >
+    <button :disabled="!amount" @click="bridge" class="confirm-btn">
       Confirm
     </button>
   </div>
@@ -44,10 +40,13 @@ import {
 } from "../hooks/useBalance";
 import { useConnectWallet } from "../hooks/useConnectWallet";
 import { useStore } from "../store";
+import { useBridge } from "../hooks/useBridge";
 
 export default defineComponent({
   props: ["closeModal"],
   setup(props) {
+    const { bridge, inputHandler, amount } = useBridge();
+
     let transferAmount = ref<string>();
     let tokenBalance = ref<string>("0");
     let destBalance = ref<string>();
@@ -87,14 +86,6 @@ export default defineComponent({
       destBalance.value = balance || "0";
     };
 
-    function setBalance(e: any) {
-      transferAmount.value = e.target.value;
-    }
-
-    function handleBridge() {
-      console.log(transferAmount.value, api, destApi);
-    }
-
     watch(
       [currentAddress],
       async () => {
@@ -118,8 +109,10 @@ export default defineComponent({
       tokenDecimals,
       formatBalance,
       transferAmount,
-      setBalance,
-      handleBridge,
+      inputHandler,
+      bridge,
+      amount,
+      destBalance,
     };
   },
 });
