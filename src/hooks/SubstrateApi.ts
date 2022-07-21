@@ -147,6 +147,11 @@ class ChainApi {
           account,
           { signer, nonce: -1, tip },
           (result) => {
+            if (result.status.isReady) {
+              console.log("===============started===============");
+              alert("started");
+            }
+
             handleResult &&
               handleResult(result).then(async () => {
                 await finalizedCallback();

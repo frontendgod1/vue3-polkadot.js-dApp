@@ -50,6 +50,7 @@ export const useBridge = () => {
   const currentAccount = computed<string>(
     () => store.getters["account/selectedAddress"]
   );
+  const isLoading = ref<boolean>(false);
   const srcChain = ref<XcmChain>(kyotoChain);
   const destChain = ref<XcmChain>(shibuyaChain);
   const destParaId = ref<number>(shibuyaChain.parachainId);
@@ -129,7 +130,6 @@ export const useBridge = () => {
             .parseUnits(amount.value, decimals.value)
             .toString(),
         });
-        console.log("=========start==========");
 
         await originChainApi
           .signAndSend({
