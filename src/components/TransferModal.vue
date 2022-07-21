@@ -22,7 +22,7 @@
         <span class="token-symbol">{{ nativeTokenSymbol }}</span>
       </div>
     </div>
-    <button :disabled="!amount" @click="bridge" class="confirm-btn">
+    <button :disabled="!amount" @click="handleBridge" class="confirm-btn">
       Confirm
     </button>
   </div>
@@ -43,7 +43,7 @@ import { useStore } from "../store";
 import { useBridge } from "../hooks/useBridge";
 
 export default defineComponent({
-  props: ["closeModal"],
+  props: ["closeModal", "handleUpdateTokenBalance"],
   setup(props) {
     const { bridge, inputHandler, amount } = useBridge();
 
@@ -86,6 +86,11 @@ export default defineComponent({
       destBalance.value = balance || "0";
     };
 
+    const handleBridge = async (): Promise<void> => {
+      await bridge(props.closeModal);
+      await props.handleUpdateTokenBalance();
+    };
+
     watch(
       [currentAddress],
       async () => {
@@ -113,6 +118,7 @@ export default defineComponent({
       bridge,
       amount,
       destBalance,
+      handleBridge,
     };
   },
 });

@@ -29,7 +29,11 @@
         </tr>
       </tbody>
     </table>
-    <TransferModal v-if="openModal" :close-modal="closeModal" />
+    <TransferModal
+      v-if="openModal"
+      :close-modal="closeModal"
+      :handle-update-token-balance="updateAccountMap"
+    />
   </div>
 </template>
 
@@ -109,6 +113,7 @@ export default defineComponent({
       selectAccount,
       openModal,
       closeModal,
+      updateAccountMap,
     };
   },
 });

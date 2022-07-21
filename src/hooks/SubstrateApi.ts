@@ -133,7 +133,7 @@ class ChainApi {
     account: string;
     signer: any;
     tx: ExtrinsicPayload;
-    finalizedCallback: () => Promise<void>;
+    finalizedCallback: () => void;
     handleResult?: (result: ISubmittableResult) => Promise<boolean>;
     tip: string;
   }) {
@@ -201,6 +201,7 @@ class ChainApi {
                 });
 
               if (!finalResult) resolve(true);
+              finalizedCallback();
             }
 
             // handleResult &&
