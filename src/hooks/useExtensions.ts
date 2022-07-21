@@ -18,10 +18,9 @@ interface InjectedAccountExt {
 
 const getInjectedExtensions = async (forceRequest = false): Promise<any[]> => {
   const connected = localStorage.getItem("connected");
-  console.log(forceRequest, connected);
   if (connected != null || forceRequest) {
     let extensions = await web3Enable("My Dapp");
-    console.log(extensions);
+    localStorage.setItem("connected", "true");
     return extensions;
   }
   return [];
