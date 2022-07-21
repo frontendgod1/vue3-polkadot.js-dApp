@@ -114,7 +114,6 @@ export const useBridge = () => {
       if (isDeposit.value) {
         let recipientAccountId = currentAccount.value;
         const injector = await getInjector(substrateAccounts.value);
-        console.log("injector:", injector);
 
         const txCall = originChainApi.transferToParachain({
           toPara: destParaId.value,
