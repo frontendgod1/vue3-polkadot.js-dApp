@@ -21,6 +21,7 @@ const getInjectedExtensions = async (forceRequest = false): Promise<any[]> => {
   console.log(forceRequest, connected);
   if (connected != null || forceRequest) {
     let extensions = await web3Enable("My Dapp");
+    console.log(extensions);
     return extensions;
   }
   return [];
